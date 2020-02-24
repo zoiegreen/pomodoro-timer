@@ -1,44 +1,21 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Pomodoro Timer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Asap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Asap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="pomodoro-container">
+      <div class="timer-display"></div>
+      <div class="button start">Start</div>
+      <div class="button pause">Pause</div>
+      <div class="button stop">Stop</div>
+    </div>
     <script src="js/script.js"></script>
-</head>
-
-<body>
-    <div id="container">
-        <header>
-            <h1>Freecodecamp Pomodoro Timer</h1>
-        </header>
-        <ul class="settings">
-            <li class="break-display">
-                <div class="control">
-                    <button type="button" class="minus ctrlVal break-time">-</button><span class="break"></span>
-                    <button type="button" class="plus ctrlVal break-time">+</button>
-                </div>Break time</li>
-            <li class="pom-display">
-                <div class="control">
-                    <button type="button" class="minus ctrlVal pom-time">-</button><span class="pomodoro"></span>
-                    <button type="button" class="plus ctrlVal pom-time">+</button>
-                    </div>Session Time</li>
-        </ul>
-        <div id="progress-bar">
-	        <div id="myProgress">
-	            <div id="myBar"></div>
-	        </div>
-        </div>
-        <div class="timer">
-            <p class="time-display"></p>
-        </div>
-        <div class="buttonSection">
-            <button type="button" class="start">Start</button>
-            <button type="button" class="reset">Reset</button>
-        </div>
-        </div>
-</body>
-
+  </body>
 </html>

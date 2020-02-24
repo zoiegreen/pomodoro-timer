@@ -1,162 +1,80 @@
-//Initialize a global variable timoOut to use against setInterval and clearInterval functions
-var timeOut;
+// add event listener to start button to set a new pomodoro
+// Write a pomodoro function
+// -- Pomodor begins at 25 minutes
+// -- Users see a countdown from 25 to 00
+// -- Users can pause the running countdown
+// -- The pomodoro display is in 00:00 format
 
-window.onload = function() {
-    //Initialize variables for display, start, plus and minus sign controllers and minutes and seconds
-    var breakDisplay = document.querySelector('.break-display');
-    var pomDisplay = document.querySelector('.pom-display');
-    var start = document.querySelector('.start');
-    var reset = document.querySelector('.reset');
-    var plus = document.querySelectorAll('.plus');
-    var minus = document.querySelectorAll('.minus');
-    var pomodoro = document.querySelector('.pomodoro');
-    var freeTime = document.querySelector('.break');
-    pomodoro.innerHTML = 25;
-    freeTime.innerHTML = 5
-    var pomodoroMinutes = pomodoro.textContent;
-    var breakMinutes = freeTime.textContent;
+// Select Pomodoro display to edit timer content
+const pomodoroDisplay = document.querySelector(".timer-display");
 
-    //Event listeners for plus and minus button
+// Select start, pause & stop buttons
+let startButton = document.querySelector(".start");
+let stopButton = document.querySelector(".stop");
+let pauseButton = document.querySelector(".pause");
 
-    plus.forEach(function(elem) {
-        //Since this a node list select each item individually and add event listener
-        elem.addEventListener('click', function() {
-            if (elem.classList.contains("break-time")) {
-                var breakNum = Number(freeTime.innerText);
-                freeTime.textContent = breakNum + 1;
-                //Update breakMinutes everytime the value is changed
-                breakMinutes = freeTime.textContent;
-            } else if (elem.classList.contains("pom-time")) {
-                var pomNum = Number(pomodoro.innerText);
-                pomodoro.textContent = pomNum + 1;
-                //Update pomodoroMinutes everytime the value is changed
-                pomodoroMinutes = pomodoro.textContent;
-            }
-        });
-    });
+// Set a flag to check if pomodoro was paused
+let timerRunning = true;
 
-    minus.forEach(function(elem) {
-        //Since this a node list select each item individually and add event listener
-        elem.addEventListener('click', function() {
-            if (elem.classList.contains("break-time")) {
-                var breakNum = Number(freeTime.innerText);
-                if (breakNum > 1) {
-                    freeTime.textContent = breakNum - 1;
-                }
-                breakMinutes = freeTime.textContent;
-            } else if (elem.classList.contains("pom-time")) {
-                var pomNum = Number(pomodoro.innerText);
-                if (pomNum > 1) {
-                    pomodoro.textContent = pomNum - 1;
-                }
-                pomodoroMinutes = pomodoro.textContent;
-            }
-        });
-    });
+// Set a flag to check if timer was stopped
+let timerStopped = false;
+// set pomodoro interval time
+let timerSeconds = 10;
 
-    //Function to start the progress bar
+// Declare a variable for setInterval
+let timerInterval = null;
 
-    function move() {
-        var elem = document.getElementById("myBar");
-        var width = 0;
-        var id = setInterval(frame, 1000);
+// set pause and stop display to none
+stopButton.style.display = "none";
+pauseButton.style.display = "none";
 
-        function frame() {
-            if (width > 100) {
-                clearInterval(id);
-            } else {
-                width += (100/(pomodoroMinutes * 60));
-                elem.style.width = width + '%';
-                elem.innerHTML = Math.round(width * 1) + '%';
-            }
+// Set a time tracker function for pomodoro intervals
+const timeTracker = function() {
+  //Stop the timer
+  if (timerStopped) {
+    clearInterval(timerInterval);
+    timerSeconds = 10;
+    timerStopped = false;
+  } else {
+    // start timer
+    if (timerRunning) {
+      timerInterval = setInterval(function() {
+        timerSeconds--;
+        pomodoroDisplay.innerHTML = timerSeconds;
+        if (timerSeconds === 0) {
+          clearInterval(timerInterval);
         }
+      }, 1000);
+    } else {
+      // pause timer
+      clearInterval(timerInterval);
     }
+  }
+};
 
+// Listen for clicks on the document
+document.addEventListener("click", function(event) {
+  // Start pomodor on click on start button
+  if (event.target.classList.contains("start")) {
+    timerRunning = true;
+    timeTracker();
+    startButton.style.display = "none";
+    pauseButton.style.display = "block";
+    stopButton.style.display = "block";
+  }
 
-    //Code to set the pomodoro clock time and break clock time
+  if (event.target.classList.contains("pause")) {
+    timerRunning = false;
+    timeTracker();
+    pauseButton.style.display = "none";
+    startButton.style.display = "block";
+  }
 
-    function pomodoroCountDown() {
-        var minutes = pomodoroMinutes - 1;
-        var seconds = 60;
-        //total variable keeps track of total time
-        var total = (minutes * 60) + seconds;
-        timeOut = setInterval(timer, 1000);
-
-        function timer() {
-            seconds = seconds - 1;
-            total = total - 1;
-            if (seconds === -1) {
-                minutes = minutes - 1;
-                seconds = 59;
-            }
-            var display = document.querySelector('.time-display');
-            display.innerHTML = (minutes < 10 ? "0" + minutes.toString() : minutes) + ':' + (seconds < 10 ? "0" + seconds.toString() : seconds);
-            if (total === 0) {
-                //Clear pomodoro time and set session time display to none
-                clearInterval(timeOut);
-                pomDisplay.style.display = 'none';
-                breakCountDown();
-            }
-        }
-    }
-
-    function breakCountDown() {
-        var minutes = breakMinutes - 1;
-        var seconds = 60;
-        //total variable keeps track of total time
-        var total = (minutes * 60) + seconds;
-        breakDisplay.style.display = 'inline-block';
-        timeOut = setInterval(timer, 1000);
-
-        function timer() {
-            seconds = seconds - 1;
-            total = total - 1;
-            if (seconds === -1) {
-                minutes = minutes - 1;
-                seconds = 59;
-            }
-            var display = document.querySelector('.time-display');
-            display.innerHTML = (minutes < 10 ? "0" + minutes.toString() : minutes) + ':' + (seconds < 10 ? "0" + seconds.toString() : seconds);
-            if (total === 0) {
-                //Clear break time 
-                clearInterval(timeOut);
-            }
-        }
-    }
-
-    //Add event listeners for the start and reset buttons
-
-    start.addEventListener('click', function() {
-        //Hide the plus and minus buttons when the start button is clicked
-        minus.forEach(function(elem) {
-            elem.style.display = 'none';
-        });
-        plus.forEach(function(elem) {
-            elem.style.display = 'none';
-        });
-
-        //Only display session time and rest button
-        breakDisplay.style.display = 'none';
-        start.style.display = 'none';
-        reset.style.display = 'inline-block';
-        move();
-        pomodoroCountDown();
-
-    });
-
-    reset.addEventListener('click', function() {
-        //Refresh the page once the button is clicked
-        window.location.reload(true);
-    });
-
-}
-
-
-
-
-
-
-
-
-
-
+  if (event.target.classList.contains("stop")) {
+    timerStopped = true;
+    timeTracker();
+    stopButton.style.display = "none";
+    pauseButton.style.display = "none";
+    startButton.style.display = "block";
+  }
+});
