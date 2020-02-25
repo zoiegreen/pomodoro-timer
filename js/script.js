@@ -1,6 +1,11 @@
 // Select Pomodoro display to edit timer content
 const pomodoroDisplay = document.querySelector(".timer-display");
 
+// Select start, pause & stop buttons
+const startButton = document.querySelector(".start");
+const stopButton = document.querySelector(".stop");
+const pauseButton = document.querySelector(".pause");
+
 // display initial timer state at the start
 const progressBar = new ProgressBar.Circle(pomodoroDisplay, {
   strokeWidth: 2,
@@ -10,11 +15,6 @@ const progressBar = new ProgressBar.Circle(pomodoroDisplay, {
   trailColor: "rgba(255, 255, 255, 0.308)",
   color: "#f3f3f3"
 });
-
-// Select start, pause & stop buttons
-const startButton = document.querySelector(".start");
-const stopButton = document.querySelector(".stop");
-const pauseButton = document.querySelector(".pause");
 
 // Set a flag to check if pomodoro was paused
 let timerRunning = true;
