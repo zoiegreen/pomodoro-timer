@@ -1,10 +1,3 @@
-// add event listener to start button to set a new pomodoro
-// Write a pomodoro function
-// -- Pomodor begins at 25 minutes
-// -- Users see a countdown from 25 to 00
-// -- Users can pause the running countdown
-// -- The pomodoro display is in 00:00 format
-
 // Select Pomodoro display to edit timer content
 const pomodoroDisplay = document.querySelector(".timer-display");
 
@@ -24,25 +17,53 @@ let timerSeconds = 10;
 // Declare a variable for setInterval
 let timerInterval = null;
 
-// set pause and stop display to none
-stopButton.style.display = "none";
-pauseButton.style.display = "none";
+// set function to initialize buttons at start of application
+function initializeButtons() {
+  startButton.style.display = "block";
+  stopButton.style.display = "none";
+  pauseButton.style.display = "none";
+}
+
+// set a display timer function to format time-
+const displayTimer = function(timeInput) {
+  // convert seconds into minutes
+  var minutes = Math.floor(timeInput / 60);
+  var remainingSeconds = timeInput - minutes * 60;
+  // format time for single digit prepend by 0
+  if (remainingSeconds < 10) {
+    remainingSeconds = "0" + remainingSeconds;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  // return display time
+  return `${minutes}:${remainingSeconds}`;
+};
+
+// Reset timer Seconds
+function resetTimerSeconds() {
+  timerSeconds = 10;
+}
 
 // Set a time tracker function for pomodoro intervals
 const timeTracker = function() {
   //Stop the timer
   if (timerStopped) {
     clearInterval(timerInterval);
-    timerSeconds = 10;
+    resetTimerSeconds();
+    pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
     timerStopped = false;
   } else {
     // start timer
     if (timerRunning) {
       timerInterval = setInterval(function() {
         timerSeconds--;
-        pomodoroDisplay.innerHTML = timerSeconds;
-        if (timerSeconds === 0) {
+        pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
+        if (timerSeconds < 0) {
           clearInterval(timerInterval);
+          resetTimerSeconds();
+          initializeButtons();
+          pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
         }
       }, 1000);
     } else {
@@ -54,7 +75,7 @@ const timeTracker = function() {
 
 // Listen for clicks on the document
 document.addEventListener("click", function(event) {
-  // Start pomodor on click on start button
+  // Start pomodoro on click on start button
   if (event.target.classList.contains("start")) {
     timerRunning = true;
     timeTracker();
@@ -73,8 +94,12 @@ document.addEventListener("click", function(event) {
   if (event.target.classList.contains("stop")) {
     timerStopped = true;
     timeTracker();
-    stopButton.style.display = "none";
-    pauseButton.style.display = "none";
-    startButton.style.display = "block";
+    initializeButtons();
   }
 });
+
+// display buttons at the start of timer
+initializeButtons();
+
+// display initial timer state at the start
+pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
