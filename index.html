@@ -3,22 +3,23 @@
   <head>
     <title>Pomodoro Timer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link
-      href="https://fonts.googleapis.com/css?family=Asap"
       rel="stylesheet"
+      type="text/css"
+      href="./font-awesome/css/font-awesome.min.css"
     />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <div class="pomodoro-container">
-      <div class="timer-clock">
-        <div class="timer-display"></div>
+      <div class="timer-display"></div>
+      <div class="button-group">
+        <i class="fa fa-play fa-2x start" aria-hidden="true"></i>
+        <i class="fa fa-pause fa-2x pause" aria-hidden="true"></i>
+        <i class="fa fa-stop fa-2x stop" aria-hidden="true"></i>
       </div>
-      <div class="button start">Start</div>
-      <div class="button pause">Pause</div>
-      <div class="button stop">Stop</div>
     </div>
+    <script src="js/progressbar.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/progressbar.min.js"></script>
   </body>
 </html>

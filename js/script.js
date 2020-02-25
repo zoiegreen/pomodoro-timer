@@ -1,10 +1,20 @@
 // Select Pomodoro display to edit timer content
 const pomodoroDisplay = document.querySelector(".timer-display");
 
+// display initial timer state at the start
+const progressBar = new ProgressBar.Circle(pomodoroDisplay, {
+  strokeWidth: 2,
+  text: {
+    value: "25:00"
+  },
+  trailColor: "rgba(255, 255, 255, 0.308)",
+  color: "#f3f3f3"
+});
+
 // Select start, pause & stop buttons
-let startButton = document.querySelector(".start");
-let stopButton = document.querySelector(".stop");
-let pauseButton = document.querySelector(".pause");
+const startButton = document.querySelector(".start");
+const stopButton = document.querySelector(".stop");
+const pauseButton = document.querySelector(".pause");
 
 // Set a flag to check if pomodoro was paused
 let timerRunning = true;
@@ -13,7 +23,7 @@ let timerRunning = true;
 let timerStopped = false;
 
 // set pomodoro interval time
-let timerSeconds = 10;
+let timerSeconds = 1500;
 
 // Declare a variable for setInterval
 let timerInterval = null;
@@ -24,6 +34,13 @@ function initializeButtons() {
   stopButton.style.display = "none";
   pauseButton.style.display = "none";
 }
+
+// Calculate session progress for progressbar
+const calculateSessionProgress = () => {
+  // calculate the completion rate of this session
+  let timeSpentInCurrentSession = 1500 - timerSeconds;
+  return (timeSpentInCurrentSession / 1500) * 10;
+};
 
 // set a display timer function to format time-
 const displayTimer = function(timeInput) {
@@ -38,13 +55,13 @@ const displayTimer = function(timeInput) {
     minutes = "0" + minutes;
   }
   // return display time
-  return `${minutes}:${remainingSeconds}`;
+  progressBar.text.innerText = `${minutes}:${remainingSeconds}`;
 };
 
 // Reset timer Seconds
-function resetTimerSeconds() {
-  timerSeconds = 10;
-}
+const resetTimerSeconds = function() {
+  timerSeconds = 1500;
+};
 
 // Set a time tracker function for pomodoro intervals
 const timeTracker = function() {
@@ -52,19 +69,21 @@ const timeTracker = function() {
   if (timerStopped) {
     clearInterval(timerInterval);
     resetTimerSeconds();
-    pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
+    displayTimer(timerSeconds);
+    progressBar.set(calculateSessionProgress());
     timerStopped = false;
   } else {
     // start timer
     if (timerRunning) {
       timerInterval = setInterval(function() {
         timerSeconds--;
-        pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
+        displayTimer(timerSeconds);
+        progressBar.set(calculateSessionProgress());
         if (timerSeconds < 0) {
           clearInterval(timerInterval);
           resetTimerSeconds();
           initializeButtons();
-          pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
+          displayTimer(timerSeconds);
         }
       }, 1000);
     } else {
@@ -101,6 +120,3 @@ document.addEventListener("click", function(event) {
 
 // display buttons at the start of timer
 initializeButtons();
-
-// display initial timer state at the start
-pomodoroDisplay.innerHTML = displayTimer(timerSeconds);
