@@ -11,6 +11,7 @@ let timerRunning = true;
 
 // Set a flag to check if timer was stopped
 let timerStopped = false;
+
 // set pomodoro interval time
 let timerSeconds = 10;
 
