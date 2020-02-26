@@ -8,8 +8,7 @@
 
 body {
   background: #6bab90;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0 1rem 1rem 1rem;
 }
 
 .pomodoro-container {
