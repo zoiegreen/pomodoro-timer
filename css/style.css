@@ -21,6 +21,12 @@ body {
   text-align: center;
 }
 
+.session-type {
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding-bottom: 1.25rem;
+}
+
 .timer-display {
   font-size: 3rem;
 }
@@ -49,4 +55,11 @@ body {
 
 li.stop {
   margin-left: 0.5rem;
+}
+
+/* Media Queries */
+@media (max-width: 40rem) {
+  .timer-display {
+    font-size: 2rem;
+  }
 }
