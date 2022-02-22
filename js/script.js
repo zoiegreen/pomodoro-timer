@@ -35,7 +35,7 @@ let timerRunning = true;
 let timerStopped = false;
 
 // set pomodoro interval time
-let timerSeconds = 1500;
+let timerSeconds = 5;
 let currentSessionTime = 1500;
 
 // set break interval time
