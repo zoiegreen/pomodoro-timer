@@ -124,6 +124,9 @@ const timerStart = function() {
         initializeButtons();
         displayTimer(currentSessionTime);
         progressBar.set(calculateSessionProgress());
+        
+        let audio = new Audio('ding-ding-sound-effect.mp3');
+        audio.play();
       }
     }, 1000);
   }
